@@ -57,5 +57,8 @@ testfixtures_shared/
 # These are generated from .ci/jobs.t
 .ci/jobs/
 
+# Generated TeamCity config
+.teamcity/target
+
 # Generated
 checkstyle_ide.xml
