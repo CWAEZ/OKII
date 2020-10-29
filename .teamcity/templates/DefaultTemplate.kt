@@ -33,8 +33,7 @@ object DefaultTemplate : Template({
     vcs {
         root(DefaultRoot)
 
-        // Avoid this for now since our images seem to have issue with it
-        // checkoutDir = "/dev/shm/%system.teamcity.buildType.id%/%system.build.number%"
+        checkoutDir = "/dev/shm/%system.teamcity.buildType.id%/%system.build.number%"
     }
 
     requirements {
