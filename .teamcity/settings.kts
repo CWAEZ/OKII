@@ -58,6 +58,7 @@ project {
         triggers {
             vcs {
                 perCheckinTriggering = true
+                branchFilter = "+:<default>"
             }
         }
     }
