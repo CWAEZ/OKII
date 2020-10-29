@@ -20,7 +20,10 @@
 package templates
 
 import DefaultRoot
+import jetbrains.buildServer.configs.kotlin.v2019_2.DslContext
 import jetbrains.buildServer.configs.kotlin.v2019_2.Template
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.PullRequests
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.placeholder
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
@@ -59,6 +62,19 @@ object DefaultTemplate : Template({
         param("env.BUILD_URL", "%teamcity.serverUrl%/build/%teamcity.build.id%")
         param("env.JOB_NAME", "%system.teamcity.buildType.id%")
         param("env.GIT_BRANCH", "%vcsroot.branch%")
+    }
+
+    features {
+        pullRequests {
+            vcsRootExtId = "${DefaultRoot.id}"
+            provider = github {
+                authType = token {
+                    token = "credentialsJSON:c8d7c068-fdda-4800-92f2-106fcebbfca4"
+                }
+                filterTargetBranch = "+:refs/heads/${DslContext.projectName}"
+                filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
+            }
+        }
     }
 
     steps {

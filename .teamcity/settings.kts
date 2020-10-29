@@ -77,19 +77,6 @@ project {
                 branchFilter = "+:pull/*"
             }
         }
-
-        features {
-            pullRequests {
-                vcsRootExtId = "${DefaultRoot.id}"
-                provider = github {
-                    authType = token {
-                        token = "credentialsJSON:c8d7c068-fdda-4800-92f2-106fcebbfca4"
-                    }
-                    filterTargetBranch = "+:refs/heads/${DslContext.projectName}"
-                    filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
-                }
-            }
-        }
     }
 
     subProject {
