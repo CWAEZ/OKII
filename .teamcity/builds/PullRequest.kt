@@ -19,26 +19,26 @@
 
 package builds
 
+import builds.checks.BwcChecks
+import builds.checks.OssChecks
+import builds.checks.XpackChecks
+import dependsOn
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
+import jetbrains.buildServer.configs.kotlin.v2019_2.FailureAction
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 
-object SanityCheck : BuildType({
-    name = "Sanity Check"
-    description = "Compiles all modules and runs code quality checks"
+object PullRequest : BuildType({
+    name = "Pull Request"
+    type = Type.COMPOSITE
 
-    features {
-        feature {
-            type = "xml-report-plugin"
-            param("xmlReportParsing.reportType", "checkstyle")
-            param("xmlReportParsing.reportDirs", "+:**/build/reports/checkstyle/*.xml")
-        }
+    dependsOn(OssChecks, XpackChecks, BwcChecks) {
+        onDependencyFailure = FailureAction.ADD_PROBLEM
+        onDependencyCancel = FailureAction.ADD_PROBLEM
     }
 
-    steps {
-        gradle {
-            useGradleWrapper = true
-            gradleParams = "%gradle.params% -Dignore.tests.seed"
-            tasks = "precommit"
+    triggers {
+        vcs {
+            branchFilter = "+:pull/*"
         }
     }
 })

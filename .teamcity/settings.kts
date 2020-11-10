@@ -17,17 +17,11 @@
  * under the License.
  */
 
-import builds.BwcChecks
-import builds.OssChecks
-import builds.SanityCheck
-import builds.XpackChecks
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildTypeSettings.Type.COMPOSITE
-import jetbrains.buildServer.configs.kotlin.v2019_2.DslContext
-import jetbrains.buildServer.configs.kotlin.v2019_2.FailureAction
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.PullRequests
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
+import builds.Intake
+import builds.JavaPeriodic
+import builds.PullRequest
+import builds.checks.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.project
-import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2019_2.version
 import templates.DefaultTemplate
 
@@ -45,40 +39,9 @@ project {
         param("teamcity.internal.webhooks.url", "https://homer.app.elstc.co/webhook/teamcity")
     }
 
-    buildType {
-        id("Intake")
-        name = "Intake"
-        type = COMPOSITE
-
-        dependsOn(OssChecks, XpackChecks, BwcChecks) {
-            onDependencyFailure = FailureAction.ADD_PROBLEM
-            onDependencyCancel = FailureAction.ADD_PROBLEM
-        }
-
-        triggers {
-            vcs {
-                perCheckinTriggering = true
-                branchFilter = "+:<default>"
-            }
-        }
-    }
-
-    buildType {
-        id("PullRequest")
-        name = "Pull Request"
-        type = COMPOSITE
-
-        dependsOn(OssChecks, XpackChecks, BwcChecks) {
-            onDependencyFailure = FailureAction.ADD_PROBLEM
-            onDependencyCancel = FailureAction.ADD_PROBLEM
-        }
-
-        triggers {
-            vcs {
-                branchFilter = "+:pull/*"
-            }
-        }
-    }
+    buildType(Intake)
+    buildType(PullRequest)
+    buildType(JavaPeriodic)
 
     subProject {
         id("Checks")
@@ -88,6 +51,12 @@ project {
         buildType(OssChecks)
         buildType(XpackChecks)
         buildType(BwcChecks)
-    }
 
+        subProject {
+            id("JavaCompatibilityChecks")
+            name = "Java Compatibility Checks"
+
+            buildTypes(javaCompatibilityChecks)
+        }
+    }
 }

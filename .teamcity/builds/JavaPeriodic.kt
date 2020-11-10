@@ -19,21 +19,20 @@
 
 package builds
 
+import builds.checks.javaCompatibilityChecks
 import dependsOn
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
+import lastGoodCommit
 
-object OssChecks : BuildType({
-    name = "OSS Checks"
-    description = "Runs test suite for OSS distribution modules"
+object JavaPeriodic : BuildType({
+    id("Java Periodic")
+    name = "Java Periodic"
 
-    dependsOn(SanityCheck)
+    dependsOn(javaCompatibilityChecks)
 
-    steps {
-        gradle {
-            useGradleWrapper = true
-            gradleParams = "%gradle.params% -Dignore.tests.seed"
-            tasks = "checkPart1"
+    lastGoodCommit(Intake) {
+        cron {
+            hours = "0/8"
         }
     }
 })

@@ -17,15 +17,15 @@
  * under the License.
  */
 
-package builds
+package builds.checks
 
 import dependsOn
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
 
-object XpackChecks : BuildType({
-    name = "X-Pack Checks"
-    description = "Runs test suite for x-pack distribution modules"
+object BwcChecks : BuildType({
+    name = "BWC Checks"
+    description = "Runs backwards compatibility test suite"
 
     dependsOn(SanityCheck)
 
@@ -33,7 +33,7 @@ object XpackChecks : BuildType({
         gradle {
             useGradleWrapper = true
             gradleParams = "%gradle.params% -Dignore.tests.seed"
-            tasks = "checkPart2"
+            tasks = "bwcTestSnapshots"
         }
     }
 })

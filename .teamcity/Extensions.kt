@@ -17,10 +17,9 @@
  * under the License.
  */
 
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
-import jetbrains.buildServer.configs.kotlin.v2019_2.FailureAction
-import jetbrains.buildServer.configs.kotlin.v2019_2.ReuseBuilds
-import jetbrains.buildServer.configs.kotlin.v2019_2.SnapshotDependency
+import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.ScheduleTrigger
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.schedule
 
 fun BuildType.dependsOn(buildType: BuildType, init: SnapshotDependency.() -> Unit) {
     dependencies {
@@ -34,10 +33,31 @@ fun BuildType.dependsOn(buildType: BuildType, init: SnapshotDependency.() -> Uni
     }
 }
 
+fun BuildType.lastGoodCommit(lgcBuildType: BuildType, init: ScheduleTrigger.() -> Unit) {
+    dependsOn(lgcBuildType)
+    triggers {
+        schedule {
+            triggerBuild = onWatchedBuildChange {
+                buildType = "${lgcBuildType.id}"
+                watchedBuildRule = ScheduleTrigger.WatchedBuildRule.LAST_SUCCESSFUL
+            }
+            init()
+        }
+    }
+}
+
 fun BuildType.dependsOn(vararg buildTypes: BuildType, init: SnapshotDependency.() -> Unit) {
     buildTypes.forEach { dependsOn(it, init) }
 }
 
+fun BuildType.dependsOn(buildTypes: Collection<BuildType>) {
+    buildTypes.forEach { dependsOn(it) }
+}
+
 fun BuildType.dependsOn(buildType: BuildType) {
     dependsOn(buildType) {}
+}
+
+fun Project.buildTypes(buildTypes: Collection<BuildType>) {
+    buildTypes.forEach(this::buildType)
 }
