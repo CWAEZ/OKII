@@ -50,8 +50,8 @@ fun BuildType.dependsOn(vararg buildTypes: BuildType, init: SnapshotDependency.(
     buildTypes.forEach { dependsOn(it, init) }
 }
 
-fun BuildType.dependsOn(buildTypes: Collection<BuildType>) {
-    buildTypes.forEach { dependsOn(it) }
+fun BuildType.dependsOn(buildTypes: Collection<BuildType>, init: SnapshotDependency.() -> Unit) {
+    buildTypes.forEach { dependsOn(it, init) }
 }
 
 fun BuildType.dependsOn(buildType: BuildType) {

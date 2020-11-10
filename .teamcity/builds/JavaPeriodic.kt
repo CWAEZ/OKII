@@ -22,13 +22,17 @@ package builds
 import builds.checks.javaCompatibilityChecks
 import dependsOn
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
+import jetbrains.buildServer.configs.kotlin.v2019_2.FailureAction
 import lastGoodCommit
 
 object JavaPeriodic : BuildType({
     name = "Java Periodic"
     type = Type.COMPOSITE
 
-    dependsOn(javaCompatibilityChecks)
+    dependsOn(javaCompatibilityChecks) {
+        onDependencyFailure = FailureAction.ADD_PROBLEM
+        onDependencyCancel = FailureAction.ADD_PROBLEM
+    }
 
     lastGoodCommit(Intake) {
         cron {
