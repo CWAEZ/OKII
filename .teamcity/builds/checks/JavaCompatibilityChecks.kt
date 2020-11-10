@@ -31,7 +31,7 @@ val javaCompatibilityChecks = jdks.map { jdk ->
         description = "Java compatibility testing for \"${jdk}\" JDK"
 
         params {
-            param("env.JAVA_HOME", "/var/lib/jenkins/.java/${jdk}")
+            param("env.RUNTIME_JAVA_HOME", "/var/lib/jenkins/.java/${jdk}")
         }
 
         steps {
