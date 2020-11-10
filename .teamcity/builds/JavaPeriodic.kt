@@ -25,7 +25,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import lastGoodCommit
 
 object JavaPeriodic : BuildType({
-    id("Java Periodic")
+    id("JavaPeriodic")
     name = "Java Periodic"
 
     dependsOn(javaCompatibilityChecks)
