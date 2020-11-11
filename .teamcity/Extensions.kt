@@ -41,6 +41,7 @@ fun BuildType.lastGoodCommit(lgcBuildType: BuildType, init: ScheduleTrigger.() -
                 buildType = "${lgcBuildType.id}"
                 watchedBuildRule = ScheduleTrigger.WatchedBuildRule.LAST_SUCCESSFUL
             }
+            branchFilter = "+:<default>"
             init()
         }
     }
