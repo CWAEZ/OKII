@@ -19,6 +19,7 @@
 
 import builds.Intake
 import builds.JavaPeriodic
+import builds.PlatformPeriodic
 import builds.PullRequest
 import builds.checks.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.project
@@ -42,6 +43,7 @@ project {
     buildType(Intake)
     buildType(PullRequest)
     buildType(JavaPeriodic)
+    buildType(PlatformPeriodic)
 
     subProject {
         id("Checks")
@@ -57,6 +59,13 @@ project {
             name = "Java Compatibility Checks"
 
             buildTypes(javaCompatibilityChecks)
+        }
+
+        subProject {
+            id("PlatformCompatibilityChecks")
+            name = "Platform Compatibility Checks"
+
+            buildTypes(platformCompatibilityChecks)
         }
     }
 }
