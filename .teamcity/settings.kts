@@ -23,13 +23,13 @@ import builds.PullRequest
 import builds.checks.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.project
 import jetbrains.buildServer.configs.kotlin.v2019_2.version
-import templates.DefaultTemplate
 
 version = "2020.1"
 
 project {
     vcsRoot(DefaultRoot)
     template(DefaultTemplate)
+    template(WindowsTemplate)
 
     defaultTemplate = DefaultTemplate
 

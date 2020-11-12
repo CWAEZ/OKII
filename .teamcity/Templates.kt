@@ -17,9 +17,6 @@
  * under the License.
  */
 
-package templates
-
-import DefaultRoot
 import jetbrains.buildServer.configs.kotlin.v2019_2.DslContext
 import jetbrains.buildServer.configs.kotlin.v2019_2.Template
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.PullRequests
@@ -27,33 +24,45 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.placeholder
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object DefaultTemplate : Template({
+object DefaultTemplate : BaseTemplate({
     name = "Default Template"
 
     vcs {
-        root(DefaultRoot)
-
         checkoutDir = "/dev/shm/%system.teamcity.buildType.id%/%system.build.number%"
     }
 
     requirements {
         doesNotContain("teamcity.agent.jvm.os.name", "Windows")
     }
+})
+
+object WindowsTemplate : BaseTemplate({
+    name = "Windows Template"
+
+    requirements {
+        contains("teamcity.agent.jvm.os.name", "Windows")
+    }
+})
+
+open class BaseTemplate() : Template({
+    vcs {
+        root(DefaultRoot)
+    }
 
     params {
         param("gradle.max.workers", "2")
         param("gradle.params", "--max-workers=%gradle.max.workers% --scan --build-cache -Dorg.elasticsearch.build.cache.url=https://gradle-enterprise.elastic.co/cache/")
 
-        param("env.JAVA_HOME", "/var/lib/jenkins/.java/openjdk14")
-        param("env.RUNTIME_JAVA_HOME", "/var/lib/jenkins/.java/openjdk11")
-        param("env.JAVA7_HOME", "/var/lib/jenkins/.java/java7")
-        param("env.JAVA8_HOME", "/var/lib/jenkins/.java/java8")
-        param("env.JAVA9_HOME", "/var/lib/jenkins/.java/java9")
-        param("env.JAVA10_HOME", "/var/lib/jenkins/.java/java10")
-        param("env.JAVA11_HOME", "/var/lib/jenkins/.java/java11")
-        param("env.JAVA12_HOME", "/var/lib/jenkins/.java/openjdk12")
-        param("env.JAVA13_HOME", "/var/lib/jenkins/.java/openjdk13")
-        param("env.JAVA14_HOME", "/var/lib/jenkins/.java/openjdk14")
+        param("env.JAVA_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk14")
+        param("env.RUNTIME_JAVA_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk11")
+        param("env.JAVA7_HOME", "%teamcity.agent.jvm.user.home%/.java/java7")
+        param("env.JAVA8_HOME", "%teamcity.agent.jvm.user.home%/.java/java8")
+        param("env.JAVA9_HOME", "%teamcity.agent.jvm.user.home%/.java/java9")
+        param("env.JAVA10_HOME", "%teamcity.agent.jvm.user.home%/.java/java10")
+        param("env.JAVA11_HOME", "%teamcity.agent.jvm.user.home%/.java/java11")
+        param("env.JAVA12_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk12")
+        param("env.JAVA13_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk13")
+        param("env.JAVA14_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk14")
         param("env.GRADLE_OPTS", "-XX:+HeapDumpOnOutOfMemoryError -Xmx128m -Xms128m")
 
         // For now these are just to ensure compatibility with existing Jenkins-based configuration
@@ -78,7 +87,11 @@ object DefaultTemplate : Template({
 
     steps {
         script {
-            name = "Setup Build Environment"
+            name = "Setup Build Environment (Unix)"
+
+            conditions {
+                doesNotContain("teamcity.agent.jvm.os.name", "Windows")
+            }
 
             scriptContent = """
                 #!/usr/bin/env bash
@@ -109,6 +122,24 @@ object DefaultTemplate : Template({
             """.trimIndent()
         }
 
+        script {
+            name = "Setup Build Environment (Windows)"
+
+            conditions {
+                contains("teamcity.agent.jvm.os.name", "Windows")
+            }
+
+            scriptContent = """
+                del /f /s /q %USERPROFILE%\.gradle\init.d\*.*
+                mkdir %USERPROFILE%\.gradle\init.d
+                copy .ci\init.gradle %USERPROFILE%\.gradle\init.d\
+            """.trimIndent()
+        }
+
         placeholder { }
     }
-})
+}) {
+    constructor(init: BaseTemplate.() -> Unit) : this() {
+        init()
+    }
+}
