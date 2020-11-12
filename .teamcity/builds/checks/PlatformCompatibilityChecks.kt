@@ -41,7 +41,7 @@ val platforms = setOf(
 
 val platformCompatibilityChecks = platforms.map { platform ->
     BuildType {
-        id("PlatformCompatibilityCheck_${platform.toUpperCase()}")
+        id("PlatformCompatibilityCheck_${platform.toUpperCase().replace("-", "").replace(".", "")}")
         name = platform
         description = "Platform compatibility testing for \"${platform}\""
 
