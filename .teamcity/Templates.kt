@@ -44,7 +44,7 @@ object WindowsTemplate : BaseTemplate({
     }
 })
 
-open class BaseTemplate() : Template({
+sealed class BaseTemplate() : Template({
     vcs {
         root(DefaultRoot)
     }
@@ -130,9 +130,9 @@ open class BaseTemplate() : Template({
             }
 
             scriptContent = """
-                del /f /s /q %USERPROFILE%\.gradle\init.d\*.*
-                mkdir %USERPROFILE%\.gradle\init.d
-                copy .ci\init.gradle %USERPROFILE%\.gradle\init.d\
+                del /f /s /q %%USERPROFILE%%\.gradle\init.d\*.*
+                mkdir %%USERPROFILE%%\.gradle\init.d
+                copy .ci\init.gradle %%USERPROFILE%%\.gradle\init.d\
             """.trimIndent()
         }
 
