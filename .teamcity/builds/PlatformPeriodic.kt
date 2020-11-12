@@ -35,7 +35,7 @@ object PlatformPeriodic : BuildType({
     }
 
     lastGoodCommit(Intake) {
-        cron {
+        schedulingPolicy = cron {
             hours = "0/8"
         }
     }
