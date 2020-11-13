@@ -24,7 +24,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.placeholder
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object DefaultTemplate : BaseTemplate({
+object UnixTemplate : BaseTemplate({
     name = "Default Template"
 
     vcs {

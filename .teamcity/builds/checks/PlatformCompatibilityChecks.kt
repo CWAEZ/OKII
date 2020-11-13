@@ -19,6 +19,7 @@
 
 package builds.checks
 
+import UnixTemplate
 import WindowsTemplate
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
@@ -46,9 +47,7 @@ val platformCompatibilityChecks = platforms.map { platform ->
         name = platform
         description = "Platform compatibility testing for \"${platform}\""
 
-        if (platform.contains("windows")) {
-            templates(WindowsTemplate)
-        }
+        templates(if (platform.contains("windows")) WindowsTemplate else UnixTemplate)
 
         requirements {
             contains("teamcity.agent.name", platform)

@@ -19,6 +19,7 @@
 
 package builds.checks
 
+import UnixTemplate
 import dependsOn
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
@@ -26,6 +27,8 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
 object XpackChecks : BuildType({
     name = "X-Pack Checks"
     description = "Runs test suite for x-pack distribution modules"
+
+    templates(UnixTemplate)
 
     dependsOn(SanityCheck)
 

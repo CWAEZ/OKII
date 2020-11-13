@@ -29,10 +29,8 @@ version = "2020.1"
 
 project {
     vcsRoot(DefaultRoot)
-    template(DefaultTemplate)
+    template(UnixTemplate)
     template(WindowsTemplate)
-
-    defaultTemplate = DefaultTemplate
 
     params {
         param("teamcity.internal.webhooks.enable", "true")

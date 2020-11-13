@@ -19,16 +19,19 @@
 
 package builds.checks
 
+import UnixTemplate
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
 
-val jdks = listOf("java11", "openjdk14", "openjdk15", "zulu11", "corretto11", "adoptopenjdk11")
+val jdks = setOf("java11", "openjdk14", "openjdk15", "zulu11", "corretto11", "adoptopenjdk11")
 
 val javaCompatibilityChecks = jdks.map { jdk ->
     BuildType {
         id("JavaCompatibilityCheck_${jdk.toUpperCase()}")
         name = jdk
         description = "Java compatibility testing for \"${jdk}\" JDK"
+
+        templates(UnixTemplate)
 
         params {
             param("env.RUNTIME_JAVA_HOME", "/var/lib/jenkins/.java/${jdk}")
