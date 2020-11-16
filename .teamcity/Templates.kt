@@ -132,7 +132,7 @@ sealed class BaseTemplate() : Template({
             scriptContent = """
                 del /f /s /q %%USERPROFILE%%\.gradle\init.d\*.*
                 mkdir %%USERPROFILE%%\.gradle\init.d
-                copy .ci\init.gradle %%USERPROFILE%%\.gradle\init.d\
+                rem copy .ci\init.gradle %%USERPROFILE%%\.gradle\init.d\
             """.trimIndent()
         }
 
