@@ -24,7 +24,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.placeholder
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object UnixTemplate : BaseTemplate({
+object UnixTemplate : Template({
     name = "Default Template"
 
     vcs {
@@ -36,7 +36,7 @@ object UnixTemplate : BaseTemplate({
     }
 })
 
-object WindowsTemplate : BaseTemplate({
+object WindowsTemplate : Template({
     name = "Windows Template"
 
     requirements {
@@ -44,7 +44,7 @@ object WindowsTemplate : BaseTemplate({
     }
 })
 
-sealed class BaseTemplate() : Template({
+object DefaultTemplate : Template({
     vcs {
         root(DefaultRoot)
     }
@@ -138,8 +138,4 @@ sealed class BaseTemplate() : Template({
 
         placeholder { }
     }
-}) {
-    constructor(init: BaseTemplate.() -> Unit) : this() {
-        init()
-    }
-}
+})

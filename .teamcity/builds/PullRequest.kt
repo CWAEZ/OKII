@@ -19,7 +19,6 @@
 
 package builds
 
-import DefaultRoot
 import builds.checks.BwcChecks
 import builds.checks.OssChecks
 import builds.checks.XpackChecks
@@ -31,10 +30,6 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 object PullRequest : BuildType({
     name = "Pull Request"
     type = Type.COMPOSITE
-
-    vcs {
-        root(DefaultRoot)
-    }
 
     dependsOn(OssChecks, XpackChecks, BwcChecks) {
         onDependencyFailure = FailureAction.ADD_PROBLEM
