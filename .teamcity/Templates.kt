@@ -25,7 +25,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.placeholder
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object UnixTemplate : Template({
-    name = "Default Template"
+    name = "Unix Template"
 
     vcs {
         checkoutDir = "/dev/shm/%system.teamcity.buildType.id%/%system.build.number%"
@@ -45,6 +45,8 @@ object WindowsTemplate : Template({
 })
 
 object DefaultTemplate : Template({
+    name = "Default Template"
+
     vcs {
         root(DefaultRoot)
     }
