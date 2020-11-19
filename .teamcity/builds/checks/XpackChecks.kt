@@ -35,7 +35,7 @@ object XpackChecks : BuildType({
     steps {
         gradle {
             useGradleWrapper = true
-            gradleParams = "%gradle.params% -Dignore.tests.seed"
+            gradleParams = "%gradle.params% -Dignore.tests.seed -Dscan.capture-task-input-files"
             tasks = "checkPart2"
         }
     }
