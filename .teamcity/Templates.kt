@@ -46,6 +46,10 @@ object WindowsTemplate : Template({
     requirements {
         contains("teamcity.agent.jvm.os.name", "Windows")
     }
+
+    params {
+        param("system.teamcity.build.tempDir", "C:\temp\buildTmp")
+    }
 })
 
 object DefaultTemplate : Template({
