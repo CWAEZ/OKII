@@ -48,7 +48,7 @@ object WindowsTemplate : Template({
     }
 
     params {
-        param("system.teamcity.build.tempDir", "C:\temp\buildTmp")
+        param("system.teamcity.build.tempDir", "C:\\temp\\buildTmp")
     }
 })
 
