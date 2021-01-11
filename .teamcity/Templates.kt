@@ -39,12 +39,12 @@ object UnixTemplate : Template({
 object WindowsTemplate : Template({
     name = "Windows Template"
 
-    requirements {
-        contains("teamcity.agent.jvm.os.name", "Windows")
+    vcs {
+        checkoutDir = "C:\\work\\%system.teamcity.buildType.id%\\%system.build.number%"
     }
 
-    params {
-        param("teamcity.agent.work.dir", "C:\\workspace")
+    requirements {
+        contains("teamcity.agent.jvm.os.name", "Windows")
     }
 })
 
