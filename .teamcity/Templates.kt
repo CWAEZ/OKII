@@ -42,6 +42,10 @@ object WindowsTemplate : Template({
     requirements {
         contains("teamcity.agent.jvm.os.name", "Windows")
     }
+
+    params {
+        param("teamcity.agent.work.dir", "C:\\workspace")
+    }
 })
 
 object DefaultTemplate : Template({
