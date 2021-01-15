@@ -73,6 +73,7 @@ object DefaultTemplate : Template({
         param("env.JAVA12_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk12")
         param("env.JAVA13_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk13")
         param("env.JAVA14_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk14")
+        param("env.JAVA14_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk15")
         param("env.GRADLE_OPTS", "-XX:+HeapDumpOnOutOfMemoryError -Xmx128m -Xms128m")
 
         // For now these are just to ensure compatibility with existing Jenkins-based configuration
