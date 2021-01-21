@@ -51,7 +51,7 @@ fun BuildType.dependsOn(vararg buildTypes: BuildType, init: SnapshotDependency.(
     buildTypes.forEach { dependsOn(it, init) }
 }
 
-fun BuildType.dependsOn(buildTypes: Collection<BuildType>, init: SnapshotDependency.() -> Unit) {
+fun BuildType.dependsOn(buildTypes: List<BuildType>, init: SnapshotDependency.() -> Unit) {
     buildTypes.forEach { dependsOn(it, init) }
 }
 
@@ -59,6 +59,7 @@ fun BuildType.dependsOn(buildType: BuildType) {
     dependsOn(buildType) {}
 }
 
-fun Project.buildTypes(buildTypes: Collection<BuildType>) {
+fun Project.buildTypes(buildTypes: List<BuildType>) {
     buildTypes.forEach(this::buildType)
+    buildTypesOrder = buildTypes
 }
