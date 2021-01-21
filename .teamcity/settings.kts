@@ -43,6 +43,7 @@ project {
     buildType(JavaPeriodic)
     buildType(PlatformPeriodic)
     buildType(BwcPeriodic)
+    buildType(BranchStatus)
 
     subProject {
         id("Checks")
