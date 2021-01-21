@@ -17,10 +17,7 @@
  * under the License.
  */
 
-import builds.Intake
-import builds.JavaPeriodic
-import builds.PlatformPeriodic
-import builds.PullRequest
+import builds.*
 import builds.checks.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.project
 import jetbrains.buildServer.configs.kotlin.v2019_2.version
@@ -45,6 +42,7 @@ project {
     buildType(PullRequest)
     buildType(JavaPeriodic)
     buildType(PlatformPeriodic)
+    buildType(BwcPeriodic)
 
     subProject {
         id("Checks")
@@ -67,6 +65,13 @@ project {
             name = "Platform Compatibility Checks"
 
             buildTypes(platformCompatibilityChecks)
+        }
+
+        subProject {
+            id("BwcChecks")
+            name = "Backward Compatibility Checks"
+
+            buildTypes(bwcChecks)
         }
     }
 }

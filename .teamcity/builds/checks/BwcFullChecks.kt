@@ -17,26 +17,31 @@
  * under the License.
  */
 
-package builds
+package builds.checks
 
-import builds.checks.javaCompatibilityChecks
-import dependsOn
+import UnixTemplate
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
-import jetbrains.buildServer.configs.kotlin.v2019_2.FailureAction
-import lastGoodCommit
+import jetbrains.buildServer.configs.kotlin.v2019_2.DslContext
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
+import org.yaml.snakeyaml.Yaml
+import java.io.File
 
-object JavaPeriodic : BuildType({
-    name = "Java Periodic"
-    type = Type.COMPOSITE
+val bwcVersions = Yaml().load<Map<String, Any>>(File(DslContext.baseDir, "bwcVersions").reader())["BWC_VERSION"] as List<String>
 
-    dependsOn(javaCompatibilityChecks) {
-        onDependencyFailure = FailureAction.ADD_PROBLEM
-        onDependencyCancel = FailureAction.ADD_PROBLEM
-    }
+val bwcChecks = bwcVersions.map { version ->
+    BuildType {
+        id("BwcCheck_${version.replace(".", "_")}")
+        name = "Elasticsearch $version"
+        description = "Backward compatibility testing for version ${version}"
 
-    lastGoodCommit(Intake) {
-        schedulingPolicy = cron {
-            hours = "2/8"
+        templates(UnixTemplate)
+
+        steps {
+            gradle {
+                useGradleWrapper = true
+                gradleParams = "%gradle.params%"
+                tasks = "v${version}#bwcTest"
+            }
         }
     }
-})
+}

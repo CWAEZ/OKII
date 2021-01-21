@@ -19,24 +19,24 @@
 
 package builds
 
-import builds.checks.javaCompatibilityChecks
+import builds.checks.bwcChecks
 import dependsOn
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.FailureAction
 import lastGoodCommit
 
-object JavaPeriodic : BuildType({
-    name = "Java Periodic"
+object BwcPeriodic : BuildType({
+    name = "Backward Compatibility Periodic"
     type = Type.COMPOSITE
 
-    dependsOn(javaCompatibilityChecks) {
+    dependsOn(bwcChecks) {
         onDependencyFailure = FailureAction.ADD_PROBLEM
         onDependencyCancel = FailureAction.ADD_PROBLEM
     }
 
     lastGoodCommit(Intake) {
         schedulingPolicy = cron {
-            hours = "2/8"
+            hours = "4/8"
         }
     }
 })
