@@ -61,9 +61,9 @@ object DefaultTemplate : Template({
 
     params {
         param("gradle.max.workers", "2")
-        param("gradle.params", "--max-workers=%gradle.max.workers% --scan --build-cache -Dorg.elasticsearch.build.cache.url=https://gradle-enterprise.elastic.co/cache/")
+        param("gradle.params", "--max-workers=%gradle.max.workers% --scan --build-cache --daemon -Dorg.elasticsearch.build.cache.url=https://gradle-enterprise.elastic.co/cache/")
 
-        param("env.JAVA_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk14")
+        param("env.JAVA_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk15")
         param("env.RUNTIME_JAVA_HOME", "%teamcity.agent.jvm.user.home%/.java/openjdk11")
         param("env.JAVA7_HOME", "%teamcity.agent.jvm.user.home%/.java/java7")
         param("env.JAVA8_HOME", "%teamcity.agent.jvm.user.home%/.java/java8")
