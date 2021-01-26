@@ -20,6 +20,8 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.ScheduleTrigger
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.schedule
+import org.yaml.snakeyaml.Yaml
+import java.io.File
 
 fun BuildType.dependsOn(buildType: BuildType, init: SnapshotDependency.() -> Unit) {
     dependencies {
@@ -62,4 +64,8 @@ fun BuildType.dependsOn(buildType: BuildType) {
 fun Project.buildTypes(buildTypes: List<BuildType>) {
     buildTypes.forEach(this::buildType)
     buildTypesOrder = buildTypes
+}
+
+fun <T> readYaml(path: String, key: String): T {
+    return Yaml().load<Map<String, Any>>(File(DslContext.baseDir, path).reader())[key] as T
 }

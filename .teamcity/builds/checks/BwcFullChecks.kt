@@ -24,9 +24,10 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.DslContext
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
 import org.yaml.snakeyaml.Yaml
+import readYaml
 import java.io.File
 
-val bwcVersions = Yaml().load<Map<String, Any>>(File(DslContext.baseDir, "bwcVersions").reader())["BWC_VERSION"] as List<String>
+val bwcVersions: List<String> = readYaml("bwcVersions", "BWC_VERSION")
 
 val bwcChecks = bwcVersions.map { version ->
     BuildType {
@@ -40,6 +41,24 @@ val bwcChecks = bwcVersions.map { version ->
             gradle {
                 useGradleWrapper = true
                 gradleParams = "%gradle.params%"
+                tasks = "v${version}#bwcTest"
+            }
+        }
+    }
+}
+
+val bwcDefaultDistroChecks = bwcVersions.map { version ->
+    BuildType {
+        id("BwcCheck_DefaultDistro_${version.replace(".", "_")}")
+        name = "Elasticsearch $version"
+        description = "Backward compatibility testing for version ${version} using default distribution"
+
+        templates(UnixTemplate)
+
+        steps {
+            gradle {
+                useGradleWrapper = true
+                gradleParams = "%gradle.params% -Dtests.distribution=default"
                 tasks = "v${version}#bwcTest"
             }
         }

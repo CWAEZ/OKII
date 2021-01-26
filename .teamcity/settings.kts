@@ -43,6 +43,7 @@ project {
     buildType(JavaPeriodic)
     buildType(PlatformPeriodic)
     buildType(BwcPeriodic)
+    buildType(BwcDefaultDistroPeriodic)
     buildType(BranchStatus)
 
     subProject {
@@ -73,6 +74,13 @@ project {
             name = "Backward Compatibility Checks"
 
             buildTypes(bwcChecks)
+        }
+
+        subProject {
+            id("BwcChecks")
+            name = "Default Distro Backward Compatibility Checks"
+
+            buildTypes(bwcDefaultDistroChecks)
         }
     }
 }
