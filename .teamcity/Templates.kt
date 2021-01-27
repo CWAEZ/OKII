@@ -33,6 +33,7 @@ object UnixTemplate : Template({
 
     requirements {
         doesNotContain("teamcity.agent.jvm.os.name", "Windows")
+        doesNotContain("teamcity.agent.name", "packaging")
     }
 })
 
@@ -45,6 +46,7 @@ object WindowsTemplate : Template({
 
     requirements {
         contains("teamcity.agent.jvm.os.name", "Windows")
+        doesNotContain("teamcity.agent.name", "packaging")
     }
 
     params {
