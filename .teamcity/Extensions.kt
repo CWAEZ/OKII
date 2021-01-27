@@ -66,6 +66,10 @@ fun Project.buildTypes(buildTypes: List<BuildType>) {
     buildTypesOrder = buildTypes
 }
 
+fun Project.buildTypes(vararg buildTypes: BuildType) {
+    buildTypes(buildTypes.asList())
+}
+
 fun <T> readYaml(path: String, key: String): T {
     return Yaml().load<Map<String, Any>>(File(DslContext.baseDir, path).reader())[key] as T
 }

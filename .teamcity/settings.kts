@@ -38,22 +38,27 @@ project {
         param("teamcity.internal.webhooks.url", "https://homer.app.elstc.co/webhook/teamcity")
     }
 
-    buildType(Intake)
-    buildType(PullRequest)
-    buildType(JavaPeriodic)
-    buildType(PlatformPeriodic)
-    buildType(BwcPeriodic)
-    buildType(BwcDefaultDistroPeriodic)
-    buildType(BranchStatus)
+    buildTypes(
+        Intake,
+        PullRequest,
+        JavaPeriodic,
+        PlatformPeriodic,
+        BwcPeriodic,
+        BwcDefaultDistroPeriodic,
+        DefaultDistroPeriodic,
+        BranchStatus
+    )
 
     subProject {
         id("Checks")
         name = "Checks"
 
-        buildType(SanityCheck)
-        buildType(OssChecks)
-        buildType(XpackChecks)
-        buildType(BwcChecks)
+        buildTypes(
+            SanityCheck,
+            OssChecks,
+            XpackChecks,
+            BwcChecks
+        )
 
         subProject {
             id("JavaCompatibilityChecks")
