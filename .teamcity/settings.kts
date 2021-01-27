@@ -77,7 +77,7 @@ project {
         }
 
         subProject {
-            id("BwcChecks")
+            id("DefaultDistroBwcChecks")
             name = "Default Distro Backward Compatibility Checks"
 
             buildTypes(bwcDefaultDistroChecks)
