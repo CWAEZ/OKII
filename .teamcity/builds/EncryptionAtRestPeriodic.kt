@@ -19,7 +19,6 @@
 
 package builds
 
-import UnixTemplate
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
@@ -28,12 +27,11 @@ import lastGoodCommit
 object EncryptionAtRestPeriodic : BuildType({
     name = "Encryption at Rest Periodic"
 
-    templates(UnixTemplate)
-
-    vcs {
-        // Override checkout directory so that we don't try to use a ramdisk here
-        checkoutDir = ""
+    requirements {
+        doesNotContain("teamcity.agent.jvm.os.name", "Windows")
+        contains("teamcity.agent.name", "packaging")
     }
+
 
     lastGoodCommit(Intake) {
         schedulingPolicy = cron {
