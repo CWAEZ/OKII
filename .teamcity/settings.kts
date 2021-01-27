@@ -46,6 +46,7 @@ project {
         BwcPeriodic,
         BwcDefaultDistroPeriodic,
         DefaultDistroPeriodic,
+        EncryptionAtRestPeriodic,
         BranchStatus
     )
 
