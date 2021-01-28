@@ -57,7 +57,7 @@ object EncryptionAtRestPeriodic : BuildType({
                 sudo mkdir /mnt/secret
                 sudo mount /dev/mapper/secret /mnt/secret
                 sudo chown -R jenkins /mnt/secret
-                cp -r "${'$'}WORKSPACE" /mnt/secret
+                cp -r "%teamcity.build.checkoutDir%" /mnt/secret
                 cd /mnt/secret/${'$'}(basename "%teamcity.build.checkoutDir%")
                 touch .output.log
                 rm -Rf "%teamcity.build.checkoutDir%"
