@@ -1,3 +1,4 @@
+#!/usr/local/bin/runbld --redirect-stderr
 # drop page cache and kernel slab objects on linux
 [[ -x /usr/local/sbin/drop-caches ]] && sudo /usr/local/sbin/drop-caches
 rm -Rfv ~/.gradle/init.d
@@ -19,4 +20,4 @@ if pwd | grep -v -q ^/dev/shm ; then
    MAX_WORKERS=$(($MAX_WORKERS*2/3))
 fi
 set -e
-$GRADLEW -S --max-workers=$MAX_WORKERS $2 $3
+$GRADLEW -S --max-workers=$MAX_WORKERS $@
