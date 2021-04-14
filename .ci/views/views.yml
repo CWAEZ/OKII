@@ -1,0 +1,4 @@
+- view:
+    name: 'Elasticsearch master'
+    regex: '^((?!multijob|periodic).)*$'
+    view-type: list

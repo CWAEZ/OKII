@@ -1,0 +1,32 @@
+---
+- job:
+    name: elastic+elasticsearch+%BRANCH%+intake
+    display-name: "elastic / elasticsearch # %BRANCH% - intake"
+    description: "Testing of the Elasticsearch %BRANCH% branch on every push.\n"
+    project-type: multijob
+    node: light
+    builders:
+      - multijob:
+          name: Sanity Check
+          projects:
+            - name: elastic+elasticsearch+%BRANCH%+intake+multijob+sanity-check
+              kill-phase-on: NEVER
+              current-parameters: true
+              git-revision: true
+      - multijob:
+          name: Verification
+          projects:
+            - name: elastic+elasticsearch+%BRANCH%+intake+multijob+part1
+              kill-phase-on: NEVER
+              current-parameters: true
+              git-revision: true
+    publishers:
+      - postbuildscript:
+          builders:
+            - role: SLAVE
+              build-on:
+                - SUCCESS
+              build-steps:
+                - shell: |
+                    #!/usr/local/bin/runbld
+                    /usr/bin/true

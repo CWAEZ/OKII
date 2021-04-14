@@ -1,11 +1,12 @@
-#!/bin/bash 
+#!/bin/bash
 
-if [ -z "$BRANCH" ] ; then 
+if [ -z "$BRANCH" ] ; then
     echo "BRANCH is unset"
     exit 1
-fi 
+fi
 
-rm -Rf .ci/jobs
-cp -r .ci/jobs.t .ci/jobs
+# rm -Rf .ci/jobs
+mkdir -p .ci/jobs
+cp -r .ci/jobs.t/* .ci/jobs/
 
 sed -i "s/%BRANCH%/${BRANCH}/g" .ci/jobs/*.yml
