@@ -24,7 +24,7 @@ buildScan {
     }
 
     // Automatically publish scans from Elasticsearch CI
-    if (jenkinsUrl?.host?.endsWith('elastic.co') || jenkinsUrl?.host?.endsWith('elastic.dev')) {
+    if (jenkinsUrl?.host?.endsWith('elastic.co') || jenkinsUrl?.host?.endsWith('elastic.dev') || jenkinsUrl?.host?.endsWith('localhost')) {
       publishAlways()
       buildScan.server = 'https://gradle-enterprise.elastic.co'
     }
